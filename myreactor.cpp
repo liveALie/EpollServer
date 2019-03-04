@@ -15,7 +15,9 @@
   #include <time.h>
   #include <sstream>
   #include <iomanip>   //for std::setw()/setfill()
-  #include <unistd.h>  
+  #include <unistd.h>
+  #include "logger.h"
+
   #define min(a, b) ((a <= b) ? (a) : (b))  
   CMyReactor::CMyReactor()
   {  
@@ -28,6 +30,8 @@
   }  
   bool CMyReactor::init(const char* ip, short nport)
   {  
+    Logger::GetInstance().SetFileName("EpollServer.log");
+    Logger::GetInstance().Start();
     if (!create_server_listener(ip, nport))  
     {  
         std::cout << "Unable to bind: " << ip
@@ -69,7 +73,7 @@
     ::shutdown(m_listenfd, SHUT_RDWR);  
     ::close(m_listenfd);  
     ::close(m_epollfd);  
-
+    Logger::GetInstance().Stop();
     return true;
   }  
   bool CMyReactor::close_client(int clientfd)
@@ -184,8 +188,8 @@
   }  
   void CMyReactor::worker_thread_proc(CMyReactor* pReatcor)
   {  
-    std::cout << "new worker thread, thread id = "
-              << std::this_thread::get_id() << std::endl;  
+    // std::cout << "new worker thread, thread id = "
+    //           << std::this_thread::get_id() << std::endl;  
 
     while (true)  
     {  
@@ -248,7 +252,8 @@
         if (bError)  
             continue;  
 
-        std::cout << "client msg: " << strclientmsg;  
+        // std::cout << "client msg: " << strclientmsg;
+        LogInfo("client msg:%s\n",strclientmsg.c_str());  
 
         //将消息加上时间标签后发回  
         time_t now = time(NULL);  
