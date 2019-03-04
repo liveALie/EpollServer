@@ -10,6 +10,6 @@ ADD_DEFINITIONS(-g -W -Wall -Wno-deprecated
                 -std=c++11)  
 INCLUDE_DIRECTORIES(  ./  )
 #LINK_DIRECTORIES(./)  
-set(  main.cpp  myreator.cpp  )  
+set(  main.cpp  myreator.cpp  logger.cpp)  
 ADD_EXECUTABLE(myreactorserver ${SRC_LIST})  
 TARGET_LINK_LIBRARIES(myreactorserver pthread)  

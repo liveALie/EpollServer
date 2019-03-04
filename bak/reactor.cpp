@@ -60,6 +60,7 @@
     ::pthread_mutex_destroy(&g_mutex);  
 
     ::pthread_mutex_destroy(&g_clientmutex);
+    std::cout << "exit." << std::endl;
   }  
   bool create_server_listener(const char* ip, short port)
   {  
